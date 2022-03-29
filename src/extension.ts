@@ -16,6 +16,14 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.registerWebviewViewProvider("gulp-sidebar", sidebarProvider)
 	);
 
+	//Status bar item
+	const statusItem = vscode.window.createStatusBarItem(
+		vscode.StatusBarAlignment.Right
+	  );
+	  statusItem.text = "$(beaker) Gulp toolbar";
+	  statusItem.command = "";
+	  statusItem.show();
+
 	HelloWorldPanel.createOrShow(context.extensionUri);
 	
 	const execShell = (cmd: string) =>
@@ -39,7 +47,6 @@ export function activate(context: vscode.ExtensionContext) {
 
 		HelloWorldPanel.createOrShow(context.extensionUri);
 
-		const cwd = '.';
 		const command = `node -e "console.log('hi!');"`;
 
 		vscode.window.showInformationMessage(await execShell(command));
