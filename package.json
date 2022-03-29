@@ -20,7 +20,7 @@
         {
           "id": "gulp-sidebar-view",
           "title": "Gulp toolbar",
-          "icon": "media/checklist.svg"
+          "icon": "media/rocket.svg"
         }
       ]
     },
@@ -30,7 +30,7 @@
           "type": "webview",
           "id": "gulp-sidebar",
           "name": "Gulp toolbar",
-          "icon": "media/checklist.svg",
+          "icon": "media/rocket.svg",
           "contextualTitle": "Gulp toolbar"
         }
       ]
