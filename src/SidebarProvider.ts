@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { getNonce } from "./getNonce";
 import * as cp from "child_process";
 
+/*
 const execShell = (cmd: string) =>
     new Promise<string>((resolve, reject) => {
         cp.exec(cmd, (err, out) => {
@@ -11,6 +12,7 @@ const execShell = (cmd: string) =>
             return resolve(out);
         });
 });
+*/
 export class SidebarProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
   _doc?: vscode.TextDocument;
@@ -46,7 +48,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
             //vscode.window.showInformationMessage(await execShell(data.value));
             this.customTerminal = vscode.window.createTerminal("Gulp toolbox");
             this.customTerminal.show(true);
-            this.customTerminal.sendText("npm -v");
+            this.customTerminal.sendText(data.value);
 
             break;
         }
