@@ -24,7 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
 	  statusItem.command = "";
 	  statusItem.show();
 
-	HelloWorldPanel.createOrShow(context.extensionUri);
+	//HelloWorldPanel.createOrShow(context.extensionUri);
 	
 	const execShell = (cmd: string) =>
     new Promise<string>((resolve, reject) => {

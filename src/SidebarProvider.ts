@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import { getNonce } from "./getNonce";
 import * as cp from "child_process";
 
-/*
+
 const execShell = (cmd: string) =>
     new Promise<string>((resolve, reject) => {
         cp.exec(cmd, (err, out) => {
@@ -12,7 +12,7 @@ const execShell = (cmd: string) =>
             return resolve(out);
         });
 });
-*/
+
 export class SidebarProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
   _doc?: vscode.TextDocument;
@@ -45,13 +45,26 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
             if (!data.value) {
                 return;
             }
-            //vscode.window.showInformationMessage(await execShell(data.value));
-            this.customTerminal = vscode.window.createTerminal("Gulp toolbox");
-            this.customTerminal.show(true);
-            this.customTerminal.sendText(data.value);
+
+            execShell(data.value);
 
             break;
         }
+
+        case "terminal": {
+          if (!data.value) {
+              return;
+          }
+          this.customTerminal = vscode.window.createTerminal(data.value.terminalName);
+          //let terminals = vscode.window.terminals;
+          //terminals.forEach(element => {
+          //  vscode.window.showErrorMessage(element.name);
+          //});
+          this.customTerminal.show(true);
+          this.customTerminal.sendText(data.value.command);
+          vscode.window.showInformationMessage(`${data.value.terminalName} started !`);
+          break;
+      }
 
         case "onError": {
           if (!data.value) {
@@ -66,6 +79,10 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
   public revive(panel: vscode.WebviewView) {
     this._view = panel;
+  }
+
+  public runCommand(terminalName : string, command: string,){
+
   }
 
   private _getHtmlForWebview(webview: vscode.Webview) {

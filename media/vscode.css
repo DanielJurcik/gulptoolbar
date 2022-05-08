@@ -1,5 +1,5 @@
 :root {
-    --container-paddding: 20px;
+    --container-paddding: 12px;
     --input-padding-vertical: 6px;
     --input-padding-horizontal: 4px;
     --input-margin-vertical: 4px;
@@ -44,17 +44,6 @@
     font-family: var(--vscode-editor-font-family);
   }
   
-  button {
-    border: none;
-    padding: var(--input-padding-vertical) var(--input-padding-horizontal);
-    width: 100%;
-    text-align: center;
-    outline: 1px solid transparent;
-    outline-offset: 2px !important;
-    color: var(--vscode-button-foreground);
-    background: var(--vscode-button-background);
-  }
-  
   /* span {
     color: #1e1e1e;
     color: #d4d4d4;
@@ -90,6 +79,7 @@
   }
   
   input:not([type="checkbox"]),
+  select,
   textarea {
     display: block;
     width: 100%;
@@ -100,8 +90,25 @@
     outline-color: var(--vscode-input-border);
     background-color: var(--vscode-input-background);
   }
+
+  button,input[type="submit"] {
+    border: none;
+    padding: var(--input-padding-vertical) var(--input-padding-horizontal);
+    width: 100%;
+    text-align: center;
+    outline: 1px solid transparent;
+    outline-offset: 2px !important;
+    color: var(--vscode-button-foreground);
+    background: var(--vscode-button-background);
+  }
   
   input::placeholder,
   textarea::placeholder {
     color: var(--vscode-input-placeholderForeground);
+  }
+
+  hr{
+    margin-top: 16px;
+    margin-bottom: 16px;
+    height: 2px;
   }

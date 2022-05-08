@@ -5,10 +5,12 @@
 -->
 
 <script lang="ts">
-    let count = 0;
+
+    let sync_type = 'tags.';
     let tag_name = ''; 
-    //let text = '';
-    //let items : Array<string> = [];
+    let enviroment = 'DEV';
+    let text = '';
+    let items : Array<string> = [];
 </script>
 
 <!--
@@ -17,90 +19,209 @@
     /////////////////////////////////////////
 -->
 <style>
-    .btn-half{
-        width: 50%;
-        display: inline-block;
-    }
-    .d-flex{
-        display: flex;
+
+    h2,h3,h4,h5,input,button,p,select{
+        margin-bottom: 6px;
+        margin-top: 6px;
+        padding-top: 6px;
+        padding-bottom: 6px;
+    }    
+
+    .gulp-toolbar-wrapper h3{
+        /*background-color: #00406c;
+        margin-left: calc(var(--container-paddding) * -1);
+        margin-right: calc(var(--container-paddding) * -1);*/
+        margin-bottom: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-top: 18px;
+        border-bottom: 2px solid white;
     }
 
-    .mr-1{
+    .clickable{
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
+    .gulp-toolbar-wrapper{
+        background-image: url('media/uniqa_loop.svg');
+    }
+
+    .gulp-toolbar-wrapper > hr{
+        margin-top: 32px;
+        margin-bottom: 32px;
+    }
+
+    .row-wrapper{
+        display: flex;
+    }
+    .row-wrapper > *{
+        flex-grow: 1;
         margin-right: 8px;
     }
 
-</style>
+    .row-wrapper > *:last-child{
+        margin-right: 0;
+    }
 
+    .select-prefix, .flex-shrink{
+        flex-shrink: 2;
+    }
+</style>
 
 <!--
     /////////////////////////////////////////
     // HTML 
     /////////////////////////////////////////
 -->
+<div class="gulp-toolbar-wrapper">
+    
+    <section class="gulp">
+        <h3>Gulp :</h3>
+        <!-- Start project -->
+        <button on:click={() => {tsvscode.postMessage({ 
+            type: 'terminal', 
+            value: {
+                command: 'npm run start:dev', 
+                terminalName: 'Project'
+            }
+            });}}>Start project</button>
+    
+        <!-- Build project -->
+        <button on:click={() => {tsvscode.postMessage({
+            type: 'terminal', 
+            value: {
+                command: 'npm run build:project', 
+                terminalName: 'Build'
+            }
+        });}}>Build project</button>
+    </section>
+    
+    <section class="sync">
+        <h3>Sync :</h3>
 
-<h2>Gulp :</h2>
-<button on:click={() => {tsvscode.postMessage({ type: 'command', value: "npm run start:dev" });}}>Start project</button>
-<button on:click={() => {tsvscode.postMessage({ type: 'command', value: "npm run build:project" });}}>Build project</button>
+        <label for="enviroment">Enviroment :</label>
+        <select bind:value={enviroment} name="enviroment">
+            <option value="DEV">DEV</option>
+            <option value="TEST">TEST</option>
+        </select>
+    
+        <p>Don't forget to <b class="clickable" on:click={() => {tsvscode.postMessage({ 
+            type: 'terminal', 
+            value: {
+                command: 'npm run build:project', 
+                terminalName: 'Build'
+            } 
+        });}}>build project</b> first</p>
+    
+        <!-- List of actions -->
+        <button on:click={() => {tsvscode.postMessage({ 
+            type: 'terminal', 
+            value: {
+                command: 'npm run sync -- USING dist/uniqagroup2020/sync-config.json --actions',
+                terminalName: 'Sync'
+            }
+        });}}>List of actions</button>
+    
+        <div class="row-wrapper">
+            <!-- Sync styles -->    
+            <button on:click={() => {tsvscode.postMessage({ 
+                type: 'terminal', 
+                value: {
+                    command: `npm run sync -- USING dist/uniqagroup2020/sync-config.json --actions --actions WRITE.styles --target ${enviroment}`,
+                    terminalName: 'Sync > Styles'
+                }
+            });}}>Styles</button>
+    
+            <!-- Sync scripts -->
+            <button on:click={() => {tsvscode.postMessage({ 
+                type: 'terminal', 
+                value: {
+                    command: `npm run sync -- USING dist/uniqagroup2020/sync-config.json --actions --actions WRITE.scripts --target ${enviroment}`,
+                    terminalName: 'Sync > Scripts'
+                }
+            });}}>Scripts</button>
+        </div>
+    
+        <p>Sync > {enviroment} > {sync_type}</p>
+        <div class="row-wrapper">
+            <select class="select-prefix" bind:value={sync_type} name="sync_type">
+                <option value="tags.">TAGS</option>
+                <option value="datasources.">DATASOURCES</option>
+                <option value="templates.">TEMPLATES</option>
+                <option value="">-</option>
+            </select>
+            <input type="text" bind:value={tag_name} placeholder="Here insert the name">
+        </div>
+        <div class="row-wrapper">
+            <!-- Sync styles -->    
+            <button on:click={() => {tsvscode.postMessage({ 
+                type: 'terminal', 
+                value: {
+                    command: `npm run sync -- USING dist/uniqagroup2020/sync-config.json --actions WRITE.${sync_type}${tag_name} --target ${enviroment}`,
+                    terminalName: `Sync > WRITE > ${tag_name}`
+                }
+            });}}>WRITE</button>
+    
+            <!-- Sync scripts -->
+            <button on:click={() => {tsvscode.postMessage({ 
+                type: 'terminal', 
+                value: {
+                    command: `npm run sync -- USING dist/uniqagroup2020/sync-config.json --actions READ-FILE.${sync_type}${tag_name}`,
+                    terminalName: `Sync > READ > ${tag_name}`
+                }
+            });}}>READ-FILE</button>
+        </div>
+    </section>
+    
+    <section class="git">
+        <h3>Git :</h3>
+        <div class="row-wrapper">
+            <button on:click={() => {tsvscode.postMessage({ 
+                type: 'terminal', 
+                value: {
+                    command: `git fetch`,
+                    terminalName: `GIT > Fetch`
+                }
+            });}}>Fetch</button>
+    
+            <button on:click={() => {tsvscode.postMessage({ 
+                type: 'terminal', 
+                value: {
+                    command: `git pull origin master`,
+                    terminalName: `GIT > Pull master`
+                }
+            });}}>Pull Master</button>
+        </div>
+    </section>
+    
+    <section class="links">
+        <h3>Links :</h3>
+        <a href="https://git.uniqa.at/git/projects/WCMS/repos/uniqa-cms-uniqagroup-fe/browse/"><button>Bitbucket</button></a>
+        <a href="https://jira.uniqagroup.com/secure/RapidBoard.jspa"><button>Backlog</button></a>
+        <div class="row-wrapper">
+            <a href="https://cms-dev.uniqa.at/"><button>DEV</button></a>
+            <a href="https://cms-dev.uniqa.at/"><button>TEST</button></a>
+            <a href="https://cms-dev.uniqa.at/"><button>PROD</button></a>
+        </div>    
+    </section>
 
-<br>
+    <section class="todo-list">
+        <h3>To do list :</h3>
+        <form on:submit|preventDefault={() =>{
+            items = [text, ...items];
+            text = '';
+        }}> 
+            <div class="row-wrapper">
+                <input type="text" bind:value={text}>
+                <input class="flex-shrink"type="submit" value="Add">
+            </div> 
+        </form>
 
-<h2>Sync :</h2>
-<p>Don't forget to <a on:click={() => {tsvscode.postMessage({ type: 'command', value: "npm run build:project" });}}> build project</a> first</p>
-<button on:click={() => {tsvscode.postMessage({ type: 'command', value: "npm run sync -- USING dist/uniqagroup2020/sync-config.json --actions" });}}>List of actions</button>
-<div class="d-flex">
-    <button class="btn-half mr-1" on:click={() => {tsvscode.postMessage({ type: 'command', value: "npm run sync -- USING dist/uniqagroup2020/sync-config.json --actions WRITE.styles;" });}}>Styles</button>
-    <button class="btn-half" on:click={() => {tsvscode.postMessage({ type: 'command', value: "npm run sync -- USING dist/uniqagroup2020/sync-config.json --actions WRITE.scripts;" });}}>Scripts</button>
+        <ul>
+            {#each items as item}
+            <li>{item}</li>
+            {/each}
+        </ul >
+    </section>
 </div>
-<p>Sync tag :</p>
-<input type="text" bind:value={tag_name} placeholder="Please input only tag name">
-<div class="d-flex">
-    <button class="btn-half mr-1" on:click={() => {tsvscode.postMessage({ type: 'command', value: `npm run sync -- USING dist/uniqagroup2020/sync-config.json --actions WRITE.tags.${tag_name};` });}}>WRITE</button>
-    <button class="btn-half" on:click={() => {tsvscode.postMessage({ type: 'command', value: `npm run sync -- USING dist/uniqagroup2020/sync-config.json --actions READ.tags.${tag_name};` });}}>READ</button>
-</div>
-
-<br>
-
-<h2>Git :</h2>
-<button on:click={() => {tsvscode.postMessage({ type: 'command', value: "git fetch" });}}>Fetch</button>
-<button on:click={() => {tsvscode.postMessage({ type: 'command', value: "git pull origin master" });}}>Pull master</button>
-<button on:click={() => {tsvscode.postMessage({ type: 'command', value: "open https://git.uniqa.at/git/projects/WCMS/repos/uniqa-cms-uniqagroup-fe/browse" });}}>Bitbucket</button>
-
-<br>
-
-<h2>Links :</h2>
-<button on:click={() => {tsvscode.postMessage({ type: 'command', value: "open https://jira.uniqagroup.com/secure/RapidBoard.jspa" });}}>Backlog</button>
-<button on:click={() => {tsvscode.postMessage({ type: 'command', value: "open https://cms-dev.uniqa.at/" });}}>CMS DEV</button>
-<button on:click={() => {tsvscode.postMessage({ type: 'command', value: "open https://cms-test.uniqa.at/" });}}>CMS TEST</button>
-<button on:click={() => {tsvscode.postMessage({ type: 'command', value: "open https://cms-prod.uniqa.at/" });}}>CMS PROD</button>
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<button style="background-color: crimson;" on:click={() => {tsvscode.postMessage({ type: 'command', value: "open https://youtu.be/dQw4w9WgXcQ" });}}>Do not click !</button>
-
-<!--
-
-<h1>{count}</h1>
-<button on:click={() => {count++;}}>{count}</button>
-
-<form on:submit|preventDefault={() =>{
-    items = [text, ...items];
-    text = '';
-}}>  
-    <input type="text" bind:value={text}>
-    <button class="btn-half">WRITE</button>
-    <button class="btn-half">READ</button>
-</form>
-
--->
-
-<!--
-<ul>
-    {#each items as item}
-    <li>{item}</li>
-    {/each}
-</ul >
--->
