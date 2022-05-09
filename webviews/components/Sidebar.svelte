@@ -79,22 +79,24 @@
     <section class="gulp">
         <h3>Gulp :</h3>
         <!-- Start project -->
-        <button on:click={() => {tsvscode.postMessage({ 
-            type: 'terminal', 
-            value: {
-                command: 'npm run start:dev', 
-                terminalName: 'Project'
-            }
-            });}}>Start project</button>
-    
-        <!-- Build project -->
-        <button on:click={() => {tsvscode.postMessage({
-            type: 'terminal', 
-            value: {
-                command: 'npm run build:project', 
-                terminalName: 'Build'
-            }
-        });}}>Build project</button>
+        <div class="row-wrapper">
+            <button on:click={() => {tsvscode.postMessage({ 
+                type: 'terminal', 
+                value: {
+                    command: 'npm run start:dev', 
+                    terminalName: 'Project'
+                }
+                });}}>Start</button>
+        
+            <!-- Build project -->
+            <button on:click={() => {tsvscode.postMessage({
+                type: 'terminal', 
+                value: {
+                    command: 'npm run build:project', 
+                    terminalName: 'Build'
+                }
+            });}}>Build</button>
+        </div>
     </section>
     
     <section class="sync">
@@ -143,7 +145,7 @@
             });}}>Scripts</button>
         </div>
     
-        <p>Sync > {enviroment} > {sync_type}</p>
+        <p>Sync > {enviroment} > {sync_type}{tag_name}</p>
         <div class="row-wrapper">
             <select class="select-prefix" bind:value={sync_type} name="sync_type">
                 <option value="tags.">TAGS</option>
@@ -159,7 +161,7 @@
                 type: 'terminal', 
                 value: {
                     command: `npm run sync -- USING dist/uniqagroup2020/sync-config.json --actions WRITE.${sync_type}${tag_name} --target ${enviroment}`,
-                    terminalName: `Sync > WRITE > ${tag_name}`
+                    terminalName: `Sync > WRITE > ${enviroment} >${sync_type}${tag_name}`
                 }
             });}}>WRITE</button>
     
@@ -168,7 +170,7 @@
                 type: 'terminal', 
                 value: {
                     command: `npm run sync -- USING dist/uniqagroup2020/sync-config.json --actions READ-FILE.${sync_type}${tag_name}`,
-                    terminalName: `Sync > READ > ${tag_name}`
+                    terminalName: `Sync > REAR > ${enviroment} >${sync_type}${tag_name}`
                 }
             });}}>READ-FILE</button>
         </div>
@@ -197,8 +199,10 @@
     
     <section class="links">
         <h3>Links :</h3>
-        <a href="https://git.uniqa.at/git/projects/WCMS/repos/uniqa-cms-uniqagroup-fe/browse/"><button>Bitbucket</button></a>
-        <a href="https://jira.uniqagroup.com/secure/RapidBoard.jspa"><button>Backlog</button></a>
+        <div class="row-wrapper">
+            <a href="https://git.uniqa.at/git/projects/WCMS/repos/uniqa-cms-uniqagroup-fe/browse/"><button>Bitbucket</button></a>
+            <a href="https://jira.uniqagroup.com/secure/RapidBoard.jspa"><button>Backlog</button></a>
+        </div>
         <div class="row-wrapper">
             <a href="https://cms-dev.uniqa.at/"><button>DEV</button></a>
             <a href="https://cms-dev.uniqa.at/"><button>TEST</button></a>
