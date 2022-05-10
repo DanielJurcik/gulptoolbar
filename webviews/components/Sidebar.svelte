@@ -169,7 +169,7 @@
             <button on:click={() => {tsvscode.postMessage({ 
                 type: 'terminal', 
                 value: {
-                    command: `npm run sync -- USING dist/uniqagroup2020/sync-config.json --actions READ-FILE.${sync_type}${tag_name}`,
+                    command: `npm run sync -- USING dist/uniqagroup2020/sync-config.json --actions READ-FILE.${sync_type}${tag_name} --target ${enviroment}`,
                     terminalName: `Sync > REAR > ${enviroment} >${sync_type}${tag_name}`
                 }
             });}}>READ-FILE</button>
