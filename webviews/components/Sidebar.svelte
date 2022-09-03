@@ -8,7 +8,8 @@
 
     let sync_type = 'tags.';
     let tag_name = ''; 
-    let enviroment = 'DEV';
+    let project_name = '';
+    let enviroment = 'TEST';
     let text = '';
     let items : Array<string> = [];
 </script>
@@ -77,7 +78,14 @@
 <div class="gulp-toolbar-wrapper">
     
     <section class="gulp">
-        <h3>Gulp :</h3>
+        <h3>Project :</h3>
+        <div class="row-wrapper">
+            <select class="select-prefix" bind:value={project_name} name="project_name">
+                <option value="uniqagroup2020">uniqagroup.com</option>
+                <option value="uniqaAT">uniqa.at</option>
+                <option value="">Default</option>
+            </select>
+        </div>
         <!-- Start project -->
         <div class="row-wrapper">
             <button on:click={() => {tsvscode.postMessage({ 
@@ -120,7 +128,7 @@
         <button on:click={() => {tsvscode.postMessage({ 
             type: 'terminal', 
             value: {
-                command: 'npm run sync -- USING dist/uniqagroup2020/sync-config.json --actions',
+                command: `npm run sync -- USING dist/${project_name}/sync-config.json --actions`,
                 terminalName: 'Sync'
             }
         });}}>List of actions</button>
@@ -130,7 +138,7 @@
             <button on:click={() => {tsvscode.postMessage({ 
                 type: 'terminal', 
                 value: {
-                    command: `npm run sync -- USING dist/uniqagroup2020/sync-config.json --actions --actions WRITE.styles --target ${enviroment}`,
+                    command: `npm run sync -- USING dist/${project_name}/sync-config.json --actions --actions WRITE.styles --target ${enviroment}`,
                     terminalName: 'Sync > Styles'
                 }
             });}}>Styles</button>
@@ -139,13 +147,13 @@
             <button on:click={() => {tsvscode.postMessage({ 
                 type: 'terminal', 
                 value: {
-                    command: `npm run sync -- USING dist/uniqagroup2020/sync-config.json --actions --actions WRITE.scripts --target ${enviroment}`,
+                    command: `npm run sync -- USING dist/${project_name}/sync-config.json --actions --actions WRITE.scripts --target ${enviroment}`,
                     terminalName: 'Sync > Scripts'
                 }
             });}}>Scripts</button>
         </div>
     
-        <p>Sync > {enviroment} > {sync_type}{tag_name}</p>
+        <p>{project_name} > {enviroment} > {sync_type}{tag_name}</p>
         <div class="row-wrapper">
             <select class="select-prefix" bind:value={sync_type} name="sync_type">
                 <option value="tags.">TAGS</option>
@@ -160,7 +168,7 @@
             <button on:click={() => {tsvscode.postMessage({ 
                 type: 'terminal', 
                 value: {
-                    command: `npm run sync -- USING dist/uniqagroup2020/sync-config.json --actions WRITE.${sync_type}${tag_name} --target ${enviroment}`,
+                    command: `npm run sync -- USING dist/${project_name}/sync-config.json --actions WRITE.${sync_type}${tag_name} --target ${enviroment}`,
                     terminalName: `Sync > WRITE > ${enviroment} >${sync_type}${tag_name}`
                 }
             });}}>WRITE</button>
@@ -169,7 +177,7 @@
             <button on:click={() => {tsvscode.postMessage({ 
                 type: 'terminal', 
                 value: {
-                    command: `npm run sync -- USING dist/uniqagroup2020/sync-config.json --actions READ-FILE.${sync_type}${tag_name} --target ${enviroment}`,
+                    command: `npm run sync -- USING dist/${project_name}/sync-config.json --actions READ-FILE.${sync_type}${tag_name} --target ${enviroment}`,
                     terminalName: `Sync > REAR > ${enviroment} >${sync_type}${tag_name}`
                 }
             });}}>READ-FILE</button>
@@ -208,24 +216,5 @@
             <a href="https://cms-dev.uniqa.at/"><button>TEST</button></a>
             <a href="https://cms-dev.uniqa.at/"><button>PROD</button></a>
         </div>    
-    </section>
-
-    <section class="todo-list">
-        <h3>To do list :</h3>
-        <form on:submit|preventDefault={() =>{
-            items = [text, ...items];
-            text = '';
-        }}> 
-            <div class="row-wrapper">
-                <input type="text" bind:value={text}>
-                <input class="flex-shrink"type="submit" value="Add">
-            </div> 
-        </form>
-
-        <ul>
-            {#each items as item}
-            <li>{item}</li>
-            {/each}
-        </ul >
     </section>
 </div>
