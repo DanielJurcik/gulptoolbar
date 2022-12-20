@@ -8,7 +8,7 @@
 
     let sync_type = 'tags.';
     let tag_name = ''; 
-    let project_name = '';
+    let project_name = 'uniqaAT';
     let enviroment = 'TEST';
     let text = '';
     let items : Array<string> = [];
@@ -83,7 +83,7 @@
             <select class="select-prefix" bind:value={project_name} name="project_name">
                 <option value="uniqagroup2020">uniqagroup.com</option>
                 <option value="uniqaAT">uniqa.at</option>
-                <option value="">Default</option>
+                <option value="standalone-tags-unq2018">uniqa.at STANDALONE</option>
             </select>
         </div>
         <!-- Start project -->
